@@ -1,6 +1,6 @@
 ﻿import React, { useState, useRef, useEffect } from "react";
 import confetti from "canvas-confetti";
-import { Send, CheckCircle2, User, Tablet, Loader2, UserPlus } from "lucide-react";
+import { CheckCircle2, User, Tablet, UserPlus } from "lucide-react";
 import DrawingCanvas from "./DrawingCanvas";
 import ToolBar from "./ToolBar";
 import { submitDrawing } from "../../services/firebase";
@@ -35,7 +35,7 @@ export default function StudentView({ roomId = "default-room" }) {
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     if (!studentName.trim()) {
-      alert("학생 이름을 입력해주세요!");
+      alert("학생 이름을 먼저 입력해주세요!");
       return;
     }
 
@@ -86,10 +86,10 @@ export default function StudentView({ roomId = "default-room" }) {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-3 sm:px-6 py-4 flex flex-col gap-3 min-h-[calc(100vh-4rem)]">
+    <div className="w-full max-w-6xl mx-auto px-3 sm:px-6 py-3 flex flex-col gap-2.5 h-[calc(100vh-3.5rem)] overflow-hidden">
       {/* 1. 상단 정보 입력 바 */}
-      <div className="bg-white rounded-3xl p-3 sm:p-4 shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center space-x-2 flex-1 min-w-[280px]">
+      <div className="bg-white rounded-2xl p-2.5 sm:p-3 shadow-xs border border-slate-200 flex flex-wrap items-center justify-between gap-2 shrink-0">
+        <div className="flex items-center space-x-2 flex-1 min-w-[260px]">
           {/* 태블릿 번호 선택 */}
           <div className="relative flex items-center">
             <div className="absolute left-2.5 text-slate-500 pointer-events-none flex items-center space-x-1">
@@ -101,7 +101,7 @@ export default function StudentView({ roomId = "default-room" }) {
                 setTabletNumber(e.target.value);
                 setLastSubmittedAt(null);
               }}
-              className="pl-8 pr-6 py-2 bg-slate-100 border border-slate-200 rounded-2xl text-xs sm:text-sm font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:outline-none appearance-none cursor-pointer hover:bg-slate-200 transition"
+              className="pl-8 pr-6 py-1.5 bg-slate-100 border border-slate-200 rounded-xl text-xs sm:text-sm font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:outline-none appearance-none cursor-pointer hover:bg-slate-200 transition"
               title="태블릿 번호"
             >
               {Array.from({ length: 35 }, (_, i) => i + 1).map((num) => (
@@ -123,16 +123,16 @@ export default function StudentView({ roomId = "default-room" }) {
               onChange={(e) => setStudentName(e.target.value)}
               placeholder="내 이름 입력 (예: 홍길동)"
               maxLength={12}
-              className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:outline-none placeholder:text-slate-400"
+              className="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:outline-none placeholder:text-slate-400"
             />
           </div>
         </div>
 
         {/* 오른쪽: 제출 상태 / 다음 친구 교대 */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 shrink-0">
           {lastSubmittedAt ? (
-            <div className="flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-200">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            <div className="flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-200">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
               <span>제출 완료 ({lastSubmittedAt})</span>
             </div>
           ) : null}
@@ -140,7 +140,7 @@ export default function StudentView({ roomId = "default-room" }) {
           <button
             type="button"
             onClick={handleSwitchToNextStudent}
-            className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl text-xs font-bold transition flex items-center space-x-1.5 border border-slate-200"
+            className="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition flex items-center space-x-1 border border-slate-200"
             title="다른 친구가 이 태블릿으로 그릴 때 눌러주세요"
           >
             <UserPlus className="w-3.5 h-3.5 text-slate-600" />
@@ -149,42 +149,45 @@ export default function StudentView({ roomId = "default-room" }) {
         </div>
       </div>
 
-      {/* 제출 완료 토스트 */}
+      {/* 제출 완료 토스트 알림 */}
       {submitSuccess && (
-        <div className="bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-lg flex items-center justify-between animate-fadeIn">
-          <div className="text-sm font-bold">
-            [{tabletNumber}번 태블릿] {studentName} 학생의 작품이 등록되었습니다.
-          </div>
+        <div className="bg-emerald-600 text-white px-4 py-2 rounded-xl shadow-md flex items-center justify-between text-xs sm:text-sm font-bold animate-fadeIn shrink-0">
+          <span>[{tabletNumber}번 태블릿] {studentName} 학생의 작품이 성공적으로 제출되었습니다.</span>
           <button
             onClick={handleSwitchToNextStudent}
-            className="px-3 py-1 bg-white text-emerald-800 rounded-xl text-xs font-black shadow-xs hover:bg-emerald-50 transition"
+            className="px-2.5 py-0.5 bg-white text-emerald-800 rounded-lg text-xs font-black shadow-xs hover:bg-emerald-50 transition"
           >
-            다음 학생에게 넘기기 →
+            다음 학생 교대 →
           </button>
         </div>
       )}
 
-      {/* 2. 도구 툴바 */}
-      <ToolBar
-        tool={tool}
-        setTool={setTool}
-        color={color}
-        setColor={setColor}
-        brushSize={brushSize}
-        setBrushSize={setBrushSize}
-        canUndo={historyState.canUndo}
-        canRedo={historyState.canRedo}
-        onUndo={() => canvasRef.current?.undo()}
-        onRedo={() => canvasRef.current?.redo()}
-        onClear={() => {
-          if (window.confirm("도화지를 모두 지우시겠습니까?")) {
-            canvasRef.current?.clear();
-          }
-        }}
-      />
+      {/* 2. 도구 툴바 (상단에 제출하기 버튼 내장) */}
+      <div className="shrink-0">
+        <ToolBar
+          tool={tool}
+          setTool={setTool}
+          color={color}
+          setColor={setColor}
+          brushSize={brushSize}
+          setBrushSize={setBrushSize}
+          canUndo={historyState.canUndo}
+          canRedo={historyState.canRedo}
+          onUndo={() => canvasRef.current?.undo()}
+          onRedo={() => canvasRef.current?.redo()}
+          onClear={() => {
+            if (window.confirm("도화지를 모두 지우시겠습니까?")) {
+              canvasRef.current?.clear();
+            }
+          }}
+          onSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
+          lastSubmittedAt={lastSubmittedAt}
+        />
+      </div>
 
-      {/* 3. 드로잉 캔버스 영역 */}
-      <div className="flex-1 min-h-[380px] sm:min-h-[440px] flex flex-col">
+      {/* 3. 드로잉 캔버스 영역 (화면 전체 꽉 차게 확장, 스크롤 불필요) */}
+      <div className="flex-1 w-full min-h-0 relative pb-1">
         <DrawingCanvas
           ref={canvasRef}
           tool={tool}
@@ -192,32 +195,6 @@ export default function StudentView({ roomId = "default-room" }) {
           brushSize={brushSize}
           onHistoryChange={setHistoryState}
         />
-      </div>
-
-      {/* 4. 제출하기 버튼 */}
-      <div className="pt-1 pb-4 flex gap-2">
-        <button
-          type="button"
-          onClick={handleSubmit}
-          disabled={isSubmitting}
-          className={`flex-1 py-3.5 px-6 rounded-2xl font-bold text-base shadow-md transition-all flex items-center justify-center space-x-2 ${
-            isSubmitting
-              ? "bg-slate-400 text-white cursor-wait"
-              : "bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white"
-          }`}
-        >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="w-5 h-5 animate-spin" />
-              <span>선생님 화면으로 전송 중...</span>
-            </>
-          ) : (
-            <>
-              <Send className="w-5 h-5" />
-              <span>{lastSubmittedAt ? `[${studentName}] 작품 수정하여 다시 제출` : `[${studentName || "내 이름"}] 작품 제출하기`}</span>
-            </>
-          )}
-        </button>
       </div>
     </div>
   );
