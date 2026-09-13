@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+﻿import React, { useState, useRef, useEffect } from "react";
 import confetti from "canvas-confetti";
-import { Send, CheckCircle2, User, Tablet, Loader2, Sparkles, UserPlus } from "lucide-react";
+import { Send, CheckCircle2, User, Tablet, Loader2, UserPlus } from "lucide-react";
 import DrawingCanvas from "./DrawingCanvas";
 import ToolBar from "./ToolBar";
 import { submitDrawing } from "../../services/firebase";
@@ -32,7 +32,6 @@ export default function StudentView({ roomId = "default-room" }) {
     localStorage.setItem("student_saved_name", studentName);
   }, [studentName]);
 
-  // 제출 처리
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     if (!studentName.trim()) {
@@ -77,7 +76,6 @@ export default function StudentView({ roomId = "default-room" }) {
     }
   };
 
-  // 다른 친구가 이 태블릿으로 새로 그릴 때
   const handleSwitchToNextStudent = () => {
     if (window.confirm("다음 친구가 그릴 수 있도록 이름과 도화지를 비우시겠습니까?\n(방금 제출한 작품은 선생님 화면에 안전하게 저장되어 있습니다)")) {
       setStudentName("");
@@ -89,12 +87,12 @@ export default function StudentView({ roomId = "default-room" }) {
 
   return (
     <div className="w-full max-w-6xl mx-auto px-3 sm:px-6 py-4 flex flex-col gap-3 min-h-[calc(100vh-4rem)]">
-      {/* 1. 상단 정보 입력 바 (태블릿 번호 & 이름 & 교대 버튼) */}
-      <div className="bg-white rounded-3xl p-3 sm:p-4 shadow-sm border border-emerald-100 flex flex-wrap items-center justify-between gap-3">
+      {/* 1. 상단 정보 입력 바 */}
+      <div className="bg-white rounded-3xl p-3 sm:p-4 shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center space-x-2 flex-1 min-w-[280px]">
           {/* 태블릿 번호 선택 */}
           <div className="relative flex items-center">
-            <div className="absolute left-2.5 text-emerald-600 pointer-events-none flex items-center space-x-1">
+            <div className="absolute left-2.5 text-slate-500 pointer-events-none flex items-center space-x-1">
               <Tablet className="w-4 h-4" />
             </div>
             <select
@@ -103,7 +101,7 @@ export default function StudentView({ roomId = "default-room" }) {
                 setTabletNumber(e.target.value);
                 setLastSubmittedAt(null);
               }}
-              className="pl-8 pr-6 py-2 bg-emerald-50 border border-emerald-200 rounded-2xl text-xs sm:text-sm font-black text-emerald-900 focus:ring-2 focus:ring-emerald-500 focus:outline-none appearance-none cursor-pointer hover:bg-emerald-100 transition"
+              className="pl-8 pr-6 py-2 bg-slate-100 border border-slate-200 rounded-2xl text-xs sm:text-sm font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:outline-none appearance-none cursor-pointer hover:bg-slate-200 transition"
               title="태블릿 번호"
             >
               {Array.from({ length: 35 }, (_, i) => i + 1).map((num) => (
@@ -139,31 +137,29 @@ export default function StudentView({ roomId = "default-room" }) {
             </div>
           ) : null}
 
-          {/* 다음 학생 교대 버튼 */}
           <button
             type="button"
             onClick={handleSwitchToNextStudent}
-            className="px-3 py-2 bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 text-slate-700 rounded-2xl text-xs font-bold transition flex items-center space-x-1.5 border border-slate-200"
+            className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl text-xs font-bold transition flex items-center space-x-1.5 border border-slate-200"
             title="다른 친구가 이 태블릿으로 그릴 때 눌러주세요"
           >
-            <UserPlus className="w-3.5 h-3.5 text-emerald-600" />
-            <span>다음 친구가 그리기</span>
+            <UserPlus className="w-3.5 h-3.5 text-slate-600" />
+            <span>다음 학생 교대</span>
           </button>
         </div>
       </div>
 
       {/* 제출 완료 토스트 */}
       {submitSuccess && (
-        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 py-3 rounded-2xl shadow-lg flex items-center justify-between animate-bounce">
-          <div className="flex items-center space-x-2 text-sm font-bold">
-            <Sparkles className="w-5 h-5" />
-            <span>[{tabletNumber}번 태블릿] {studentName} 학생의 작품이 등록되었습니다! 🎉</span>
+        <div className="bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-lg flex items-center justify-between animate-fadeIn">
+          <div className="text-sm font-bold">
+            [{tabletNumber}번 태블릿] {studentName} 학생의 작품이 등록되었습니다.
           </div>
           <button
             onClick={handleSwitchToNextStudent}
             className="px-3 py-1 bg-white text-emerald-800 rounded-xl text-xs font-black shadow-xs hover:bg-emerald-50 transition"
           >
-            다음 친구에게 넘기기 →
+            다음 학생에게 넘기기 →
           </button>
         </div>
       )}
@@ -204,10 +200,10 @@ export default function StudentView({ roomId = "default-room" }) {
           type="button"
           onClick={handleSubmit}
           disabled={isSubmitting}
-          className={`flex-1 py-3.5 px-6 rounded-2xl font-bold text-base shadow-lg transition-all flex items-center justify-center space-x-2 ${
+          className={`flex-1 py-3.5 px-6 rounded-2xl font-bold text-base shadow-md transition-all flex items-center justify-center space-x-2 ${
             isSubmitting
               ? "bg-slate-400 text-white cursor-wait"
-              : "bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 active:scale-[0.99] text-white shadow-emerald-200"
+              : "bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white"
           }`}
         >
           {isSubmitting ? (

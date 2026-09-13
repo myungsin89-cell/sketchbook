@@ -1,5 +1,5 @@
 ﻿import React from "react";
-import { ZoomIn, Tablet, Sparkles } from "lucide-react";
+import { ZoomIn, Tablet } from "lucide-react";
 
 export default function StudentCard({ student, onClick }) {
   const { tabletNumber, studentName, submission } = student;
@@ -10,12 +10,12 @@ export default function StudentCard({ student, onClick }) {
   return (
     <div
       onClick={() => onClick(student)}
-      className="group relative bg-white rounded-3xl p-4 sm:p-5 border-2 border-emerald-200 hover:border-emerald-500 shadow-lg hover:shadow-2xl cursor-pointer hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between animate-fadeIn"
+      className="group relative bg-white rounded-3xl p-4 sm:p-5 border-2 border-slate-200 hover:border-emerald-500 shadow-sm hover:shadow-xl cursor-pointer hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between animate-fadeIn"
     >
       {/* 상단: 태블릿 번호 뱃지 & 학생 이름 */}
       <div className="flex items-center justify-between gap-2 mb-3 pb-2 border-b border-slate-100">
         <div className="flex items-center space-x-2.5 min-w-0">
-          <span className="px-2.5 py-1.5 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white font-black text-xs sm:text-sm flex items-center space-x-1 shadow-sm shadow-emerald-200 shrink-0">
+          <span className="px-2.5 py-1.5 rounded-2xl bg-slate-800 text-white font-bold text-xs sm:text-sm flex items-center space-x-1 shrink-0">
             <Tablet className="w-3.5 h-3.5" />
             <span>{tabletNumber}번</span>
           </span>
@@ -56,8 +56,7 @@ export default function StudentCard({ student, onClick }) {
 
       {/* 하단 안내 문구 */}
       <div className="mt-3 flex items-center justify-between text-xs sm:text-sm font-medium text-slate-500">
-        <span className="text-emerald-700 font-bold flex items-center">
-          <Sparkles className="w-4 h-4 mr-1 text-emerald-500" />
+        <span className="text-slate-600 font-bold">
           터치하여 발표 모드
         </span>
         <span className="text-slate-400">클릭 시 확대</span>

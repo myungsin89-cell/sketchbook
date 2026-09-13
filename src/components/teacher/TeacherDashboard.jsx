@@ -6,7 +6,6 @@ import {
   Download, 
   RotateCcw, 
   Users, 
-  Palette,
   Home
 } from "lucide-react";
 import StudentCard from "./StudentCard";
@@ -79,7 +78,7 @@ export default function TeacherDashboard({ roomId = "default-room", onSwitchToHo
   };
 
   const handleResetAll = async () => {
-    if (window.confirm("⚠️ 현재 제출된 모든 작품을 비우고 새 활동을 시작하시겠습니까?\n(필요한 경우 먼저 [전체 저장]을 해주세요)")) {
+    if (window.confirm("현재 제출된 모든 작품을 비우고 새 활동을 시작하시겠습니까?\n(필요한 경우 먼저 [전체 저장]을 해주세요)")) {
       try {
         setIsResetting(true);
         await resetRoom(roomId);
@@ -104,7 +103,7 @@ export default function TeacherDashboard({ roomId = "default-room", onSwitchToHo
   return (
     <div className="min-h-screen w-full bg-slate-50 flex flex-col">
       {/* 1. 슬림 상단 바 */}
-      <header className="w-full bg-white border-b border-emerald-100 sticky top-0 z-30 shadow-xs px-4 sm:px-8 py-3">
+      <header className="w-full bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs px-4 sm:px-8 py-3">
         <div className="w-full flex items-center justify-between flex-wrap gap-3">
           {/* 좌측: 홈 버튼 & 타이틀 & 실시간 제출 개수 */}
           <div className="flex items-center space-x-3">
@@ -215,13 +214,10 @@ export default function TeacherDashboard({ roomId = "default-room", onSwitchToHo
           </div>
         ) : (
           /* 대기 화면 */
-          <div className="bg-white rounded-3xl p-12 sm:p-24 border-2 border-dashed border-emerald-200 text-center flex flex-col items-center justify-center space-y-4 shadow-xs mt-4 max-w-4xl mx-auto">
-            <div className="w-20 h-20 rounded-3xl bg-emerald-50 text-emerald-500 flex items-center justify-center animate-bounce">
-              <Palette className="w-10 h-10" />
-            </div>
+          <div className="bg-white rounded-3xl p-12 sm:p-24 border-2 border-dashed border-slate-300 text-center flex flex-col items-center justify-center space-y-4 shadow-xs mt-4 max-w-4xl mx-auto">
             <div className="space-y-1">
               <h3 className="text-xl sm:text-3xl font-black text-slate-800">
-                학생들의 멋진 그림을 기다리고 있어요! 🎨
+                학생들의 작품을 기다리고 있습니다
               </h3>
               <p className="text-sm sm:text-base text-slate-500 max-w-md mx-auto">
                 태블릿에서 <b>[제출하기]</b>를 누르면 이 화면에 큼직하게 바로 나타납니다.
